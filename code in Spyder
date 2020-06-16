@@ -1,0 +1,88 @@
+def start() :
+    import time
+    import scapy.all as scapy
+    import matplotlib.pyplot as plt
+    a , b , c , d , e , f , x , y = [] , [] , [] , [] , [] , [] , [] , []
+    TCP , UDP , DNS , IP , FTP , HTTP , i = 0 , 0 ,0 , 0 , 0 , 0 , 0
+    
+    start_time = time.time()
+    while (time.time() - start_time) <= int(variable.get()[0:2])*60 :
+        t = time.time() - start_time
+        
+        s = scapy.sniff(count = 1)
+        if 'TCP' in s[0] :
+            TCP += 1
+        if 'UDP' in s[0] :
+            UDP += 1
+        if 'DNS' in s[0] :
+            DNS += 1
+        if 'IP' in s[0] :
+            IP += 1
+        if 'FTP' in s[0] :
+            FTP += 1
+        if 'HTTP' in s[0] :
+            HTTP += 1
+        
+        protocols1 = 'TCP' , 'UDP' , 'DNS' , 'IP' , 'FTP' , 'HTTP'
+        packets1 = [TCP , UDP , DNS , IP , FTP , HTTP] 
+        plt.pie(packets1 , labels = protocols1 , autopct = '%1.1f%%' , colors = ['springgreen' , 'deepskyblue' , 'darkgrey' , 'magenta' , 'orange' , 'goldenrod'])
+        plt.title('Distribution of Packets across the different Protocols')
+        plt.axis('equal')
+        plt.show()
+        
+        plt.bar(protocols1 , packets1 , color = ['springgreen' , 'deepskyblue' , 'darkgrey' , 'magenta' , 'orange' , 'goldenrod'])
+        plt.xlabel("PROTOCOLS")
+        plt.ylabel("NUMBER OF PACKETS")
+        plt.title('Distribution of Packets across the different Protocols')
+        plt.show()
+        
+        a.append(TCP)
+        b.append(UDP)
+        c.append(DNS)
+        d.append(IP)
+        e.append(FTP)
+        f.append(HTTP)
+        x.append(t/60)
+        y.append(t)
+        plt.plot(x , a , label = 'TCP' , color = 'springgreen')
+        plt.plot(x , b , label = 'UDP' , color = 'deepskyblue')
+        plt.plot(x , c , label = 'DNS' , color = 'darkgrey')
+        plt.plot(x , d , label = 'IP' , color = 'magenta')
+        plt.plot(x , e , label = 'FTP' , color = 'orange')
+        plt.plot(x , e , label = 'HTTP' , color = 'goldenrod')
+        plt.legend(loc = 'upper left')
+        plt.xlabel("TIME in minutes")
+        plt.ylabel("NUMBER OF PACKETS")
+        plt.title('Distribution of Packets across the different Protocols')    
+        plt.gcf().autofmt_xdate()
+        plt.show()
+        
+        if 'S' in s[0].sprintf("%TCP.flags%") and 'A' not in s[0].sprintf("%TCP.flags%") :
+            i+=1
+        if i > 13 :
+            m.showinfo(title="Tracer",message="There has been a DOS attack !!!")
+            break
+    
+from tkinter import *
+import tkinter.messagebox as m
+
+w = Tk()
+w.title='Tracer'
+
+'''img = PhotoImage(file = 'D:\PROJECT\shark.GIF')
+lblimg = Label(w , image = img , width = 363 , height = 400)
+lblimg.grid(row = 1 , column = 1 , columnspan = 2)'''
+
+B = Button(w , text = 'Start' , command = start)
+B.grid(row = 1 , column = 1 , rowspan = 2)
+
+L1 = Label(w , text = 'Set Evaluation Time ')
+L1.grid(row = 1 , column = 2)
+
+OPTIONS = ["5 Minutes" , "10 Minutes" , "15 Minutes"]    
+variable = StringVar(w)
+variable.set(" --select-- ")
+OP = OptionMenu(w , variable , *OPTIONS)
+OP.grid(row = 2 , column = 2)
+
+mainloop()
