@@ -1,0 +1,9 @@
+Steps:
+1.Open Spyder in ANACONDA NAVIGATOR
+2.Copy paste my code
+3.Install Scapy library(if not there)
+4.Install Winprap in PC(if not there)
+5.Install SwitchBlade for artificially generating DOS attacts
+6.Again open Syper and run the code.
+7.Suffer internet so that differt network packets get detected by our project.
+8.Artificially generate DO DOS ATTACKS,our project recognizes it and displays a warning message.
